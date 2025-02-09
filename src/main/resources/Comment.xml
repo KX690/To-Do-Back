@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="Comment">
+
+    <resultMap id="Comment" type="Comment">
+        <result property="id"               column="id"             javaType="java.lang.Integer"/>
+        <result property="name"             column="name"           javaType="java.lang.String"/>
+        <result property="comment"          column="comment"        javaType="java.lang.String"/>
+        <result property="idPublication"    column="idPublication" javaType="java.lang.Integer"/>
+    </resultMap>
+
+    <sql id="sql_comment">
+        <![CDATA[
+            SELECT
+                c.id                AS id,
+                c.name              AS name,
+                c.comment           AS comment,
+                c.idPublication     AS idPublication
+            FROM Comment c
+        ]]>
+    </sql>
+
+
+    <select id="getAllComment" resultMap="Comment">
+        <include refid="sql_comment"/>
+    </select>
+
+    <select id="getCommentById" resultMap="Comment">
+        <include refid="sql_comment"/>
+        WHERE c.id = #{id}
+    </select>
+
+    <insert id="addComment" parameterType="Comment">
+        INSERT INTO Comment (name, comment, idPublication)
+        VALUES (#{name}, #{comment}, #{idPublication})
+    </insert>
+</mapper>
