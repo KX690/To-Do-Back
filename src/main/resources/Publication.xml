@@ -45,12 +45,12 @@
     </select>
 
     <insert id="addPublication" parameterType="Publication">
-        INSERT INTO public."Publication" (title, link, description)
+        INSERT INTO Publication (title, link, description)
         VALUES (#{title}, #{link}, #{description})
     </insert>
 
     <update id="updatePublication" parameterType="Publication">
-        UPDATE public."Publication"
+        UPDATE Publication
         SET votos_positivos = #{votosPositivos}, votos_negativos = #{votosNegativos}
         WHERE id = #{id}
     </update>
