@@ -6,11 +6,11 @@ import org.apache.ibatis.session.SqlSession;
 import java.util.List;
 
 public class CommentService {
-    public List<Comment> getAllComment() {
+    public List<Comment> getAllCommentByIdPublication( Integer idPublication){
         SqlSession sqlSession = null;
         try{
             sqlSession = SessionFactory.getInstance().getFactory().openSession();
-            List<Comment> comments = sqlSession.selectList("Comment.getAllComment");
+            List<Comment> comments = sqlSession.selectList("Comment.getAllCommentByIdPublication", idPublication);
             return comments;
 
         } catch (Exception e) {
@@ -30,4 +30,6 @@ public class CommentService {
             System.out.println("Error al agregar comentario" + e.getMessage());
         }
     }
+
+
 }

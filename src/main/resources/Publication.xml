@@ -5,19 +5,25 @@
 
 <mapper namespace="Publication">
     <resultMap id="Publication" type="Publication">
-        <result property="id"           column="id"             javaType="java.lang.Integer"/>
-        <result property="title"        column="title"          javaType="java.lang.String"/>
-        <result property="link"         column="link"           javaType="java.lang.String"/>
-        <result property="description"  column="description"    javaType="java.lang.String"/>
+        <result property="id"               column="id"             javaType="java.lang.Integer"/>
+        <result property="title"            column="title"          javaType="java.lang.String"/>
+        <result property="link"             column="link"           javaType="java.lang.String"/>
+        <result property="description"      column="description"    javaType="java.lang.String"/>
+        <result property="votosPositivos"   column="votosPositivos" javaType="java.lang.Integer"/>
+        <result property="votosNegativos"   column="votosNegativos" javaType="java.lang.Integer"/>
+        <result property="tags"             column="tags"           javaType="java.lang.String"/>
     </resultMap>
 
     <sql id="sql_publication">
         <![CDATA[
             SELECT
-                p.id            AS id,
-                p.title         AS title,
-                p.link          AS link,
-                p.description   AS description
+                p.id                AS id,
+                p.title             AS title,
+                p.link              AS link,
+                p.description       AS description,
+                p.votos_positivos    AS votosPositivos,
+                p.votos_negativos    AS votosNegativos,
+                p.tags              AS tags
             FROM Publication p
 
         ]]>
@@ -25,6 +31,7 @@
 
     <select id="getAllPublication" resultMap="Publication">
         <include refid="sql_publication"/>
+        order by p.votos_positivos desc
     </select>
 
     <select id="getPublicationById" resultMap="Publication">
@@ -32,8 +39,19 @@
         WHERE p.id = #{id}
     </select>
 
+    <select id="getPublicationByTags" resultMap="Publication">
+        <include refid="sql_publication"/>
+        WHERE p.tags = #{tags}
+    </select>
+
     <insert id="addPublication" parameterType="Publication">
-        INSERT INTO Publication (title, link, description)
+        INSERT INTO public."Publication" (title, link, description)
         VALUES (#{title}, #{link}, #{description})
     </insert>
+
+    <update id="updatePublication" parameterType="Publication">
+        UPDATE public."Publication"
+        SET votos_positivos = #{votosPositivos}, votos_negativos = #{votosNegativos}
+        WHERE id = #{id}
+    </update>
 </mapper>
